@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>Alke Wallet — Enviar dinero</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Estilos personalizados -->
+  <style>
+    :root {
+      --primary-color: #6ea8fe;
+      --bg-dark: #121212;
+      --card-bg: #1e1e2f;
+      --text-color: #ffffff;
+      --text-muted: #e0e0e0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-color);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: var(--bg-dark) !important;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    .tag {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    main.container-narrow {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .card h3 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      color: var(--text-color);
+    }
+
+    .form-control {
+      background-color: #2c2c3c;
+      border: none;
+      color: var(--text-color);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-control:focus {
+      background-color: #2c2c3c;
+      color: var(--text-color);
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, .25);
+      border: 1px solid var(--primary-color);
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border: none;
+    }
+
+    .btn-outline {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    #autocomplete {
+      background-color: #2c2c3c;
+      color: var(--text-color);
+      border-radius: 6px;
+      padding: 5px;
+      display: none;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    #autocomplete div {
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    #autocomplete div:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="../html/menu.html">
+        Alke Wallet
+      </a>
+      <div class="ms-auto">
+        <span class="tag">Saldo: <span data-balance>$0</span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="container-narrow">
+    <div class="card">
+      <h3>Enviar dinero</h3>
+      <form id="sendForm" class="mt-3">
+        <div class="mb-3 position-relative">
+          <label class="form-label">Buscar contacto</label>
+          <input type="text" id="to" name="to" class="form-control" placeholder="Escribe un nombre" autocomplete="off"
+            required>
+          <div id="autocomplete" class="mt-2"></div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Monto (CLP)</label>
+          <input type="number" name="amount" class="form-control" min="1" step="1" placeholder="5000" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nota (opcional)</label>
+          <input type="text" name="note" class="form-control" placeholder="Motivo del envío">
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+          <button class="btn btn-primary" type="submit">Enviar</button>
+          <button class="btn btn-outline" type="button" id="addContactBtn">Agregar contacto</button>
+          <a href="../html/menu.html" class="btn btn-outline">Volver</a>
+        </div>
+      </form>
+    </div>
+    <div class="footer">Autocompletar y validaciones con jQuery</div>
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    const toast = document.querySelector('.toast');
+    const balanceEl = document.querySelector('[data-balance]');
+    let currentBalance = 100000; // saldo simulado
+    balanceEl.textContent = `$${currentBalance.toLocaleString()}`;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Formulario de envío
+    const sendForm = document.getElementById('sendForm');
+    sendForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const to = sendForm.to.value;
+      const amount = parseInt(sendForm.amount.value);
+      if (amount > currentBalance) {
+        showToast("Saldo insuficiente");
+        return;
+      }
+      currentBalance -= amount;
+      balanceEl.textContent = `$${currentBalance.toLocaleString()}`;
+      showToast(`Enviado $${amount.toLocaleString()} a ${to}`);
+      sendForm.reset();
+      $('#autocomplete').hide();
+    });
+
+    // Autocompletar demo
+    const contacts = ["Ana Pérez", "Carlos Díaz", "Luis Martínez", "María López"];
+    $('#to').on('input', function () {
+      const val = $(this).val().toLowerCase();
+      const matches = contacts.filter(c => c.toLowerCase().includes(val));
+      const ac = $('#autocomplete');
+      ac.empty();
+      if (matches.length > 0 && val) {
+        matches.forEach(m => ac.append(`<div>${m}</div>`));
+        ac.show();
+      } else {
+        ac.hide();
+      }
+    });
+
+    $('#autocomplete').on('click', 'div', function () {
+      $('#to').val($(this).text());
+      $('#autocomplete').hide();
+    });
+
+    // Agregar contacto (demo)
+    $('#addContactBtn').on('click', function () {
+      const name = prompt("Nombre del nuevo contacto:");
+      if (name) {
+        contacts.push(name);
+        showToast(`Contacto "${name}" agregado`);
+      }
+    });
+  </script>
+</body>
+
+</html>

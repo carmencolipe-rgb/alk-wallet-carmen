@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>Alke Wallet — Movimientos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Estilos personalizados -->
+  <style>
+    :root {
+      --primary-color: #6ea8fe;
+      --bg-dark: #121212;
+      --card-bg: #1e1e2f;
+      --text-color: #ffffff;
+      --text-muted: #e0e0e0;
+      --amount-pos: #2ecc71;
+      --amount-neg: #ff6b6b;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-color);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: var(--bg-dark) !important;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    .tag {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    main.container-narrow {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card h3 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+    }
+
+    .amount-pos {
+      color: var(--amount-pos);
+      font-weight: bold;
+    }
+
+    .amount-neg {
+      color: var(--amount-neg);
+      font-weight: bold;
+    }
+
+    .btn-outline {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="../html/menu.html">
+        Alke Wallet
+      </a>
+      <div class="ms-auto">
+        <span class="tag">Saldo: <span data-balance>$0</span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="container-narrow">
+    <div class="card">
+      <h3>Últimos movimientos</h3>
+      <div class="list mt-3" data-tx-list></div>
+      <div class="mt-3 d-flex justify-content-center">
+        <a href="../html/menu.html" class="btn btn-outline">Volver</a>
+      </div>
+    </div>
+    <div class="footer">Registro completo de transacciones</div>
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    const toast = document.querySelector('.toast');
+    const balanceEl = document.querySelector('[data-balance]');
+    const txList = document.querySelector('[data-tx-list]');
+    let currentBalance = 100000; // saldo inicial simulado
+    balanceEl.textContent = `$${currentBalance.toLocaleString()}`;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Movimientos simulados
+    const transactions = [
+      { type: 'depósito', amount: 50000, date: '2026-01-15', desc: 'Depósito inicial' },
+      { type: 'transferencia', amount: 15000, date: '2026-01-14', desc: 'Pago a Ana Pérez' },
+      { type: 'transferencia', amount: 20000, date: '2026-01-13', desc: 'Pago a Luis Martínez' },
+    ];
+
+    function renderTransactions() {
+      txList.innerHTML = '';
+      transactions.forEach(tx => {
+        const div = document.createElement('div');
+        div.classList.add('list-item');
+        const amountClass = tx.type === 'depósito' ? 'amount-pos' : 'amount-neg';
+        div.innerHTML = `<span>${tx.date} — ${tx.desc}</span><span class="${amountClass}">${tx.type === 'depósito' ? '+' : '-'} $${tx.amount.toLocaleString()}</span>`;
+        txList.appendChild(div);
+      });
+    }
+
+    renderTransactions();
+  </script>
+</body>
+
+</html>

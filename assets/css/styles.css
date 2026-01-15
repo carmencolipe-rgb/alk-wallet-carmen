@@ -1,0 +1,188 @@
+:root {
+  --bg: #121212;
+  --surface: #1e1e2f;
+  --surface-2: #2c2c3c;
+  --text: #ffffff;
+  --muted: #e0e0e0;
+  --primary: #6ea8fe;
+  --primary-2: #5a95f5;
+  /* Slightly darker for hover */
+  --success: #2ecc71;
+  --danger: #ff6b6b;
+  --warning: #f59e0b;
+  --border: #2c2c3c;
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-2);
+}
+
+.container-narrow {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.card {
+  background-color: var(--surface);
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 30px 25px;
+}
+
+.card h3 {
+  color: var(--primary);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.btn {
+  border-radius: 6px !important;
+  padding: 8px 16px;
+  font-weight: 500;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #fff;
+  /* Ensure text is readable on light blue */
+  border: 1px solid var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-2);
+  border-color: var(--primary-2);
+  color: #fff;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.input-dark,
+.form-control {
+  background-color: var(--surface-2) !important;
+  border: 1px solid var(--primary) !important;
+  /* Matches focused state style of others */
+  color: var(--text) !important;
+  border-radius: 6px !important;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.25);
+  border-color: var(--primary) !important;
+}
+
+.form-control::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.form-label {
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.navbar-dark {
+  background-color: var(--bg) !important;
+  border-bottom: none;
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: var(--primary) !important;
+  font-size: 1.5rem;
+}
+
+.balance {
+  /* If used */
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Tag style matching the simplistic look or keeping pill but correct colors */
+.tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background-color: var(--surface-2);
+}
+
+/* Utilities */
+.text-muted {
+  color: var(--muted) !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.ms-2 {
+  margin-left: 0.5rem !important;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--primary);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  display: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.toast.show {
+  display: block;
+  opacity: 1;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}

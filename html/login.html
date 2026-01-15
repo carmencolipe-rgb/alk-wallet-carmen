@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>Alke Wallet — Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Estilos personalizados -->
+  <style>
+    :root {
+      --primary-color: #6ea8fe;
+      --bg-dark: #121212;
+      --card-bg: #1e1e2f;
+      --text-color: #ffffff;
+      --text-muted: #e0e0e0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-color);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: var(--bg-dark) !important;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    main.container-narrow {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .card h2 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .card .tag {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-label {
+      color: var(--text-color);
+    }
+
+    .form-control {
+      background-color: #2c2c3c;
+      border: none;
+      color: var(--text-color);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-control:focus {
+      background-color: #2c2c3c;
+      color: var(--text-color);
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, .25);
+      border: 1px solid var(--primary-color);
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border: none;
+      width: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="../html/index.html">
+        Alke Wallet
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="container-narrow">
+    <div class="card">
+      <h2>Iniciar sesión</h2>
+      <p class="mt-2 tag">Demo: user@alke.com / alke123</p>
+      <form id="loginForm" class="mt-3">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" placeholder="usuario@correo.com" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" class="form-control" placeholder="••••••••" required minlength="6">
+        </div>
+        <button class="btn btn-primary" type="submit">Ingresar</button>
+      </form>
+    </div>
+    <div class="footer">Acceso seguro con validación básica</div>
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const toast = document.querySelector('.toast');
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = loginForm.email.value;
+      const password = loginForm.password.value;
+
+      // Demo simple de validación
+      if (email === "user@alke.com" && password === "alke123") {
+        showToast("¡Ingreso exitoso!");
+        // Aquí podrías redirigir a menu.html
+        // window.location.href = "../html/menu.html";
+      } else {
+        showToast("Email o contraseña incorrectos");
+      }
+      loginForm.reset();
+    });
+  </script>
+</body>
+
+</html>
